@@ -1,0 +1,13 @@
+# Fichiers et dossiers spécifiques à VS Code
+.vscode/
+
+# Fichiers temporaires PHP
+*.log
+*.cache
+
+# Dépendances
+/vendor/
+
+# Fichiers de configuration locaux
+.env
+
