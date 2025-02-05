@@ -13,7 +13,7 @@ class AuthController {
 
             $userType = $_POST['user_type']; // 'patient', 'doctor', or 'admin'
             $userClass = ucfirst($userType);
-            require_once "../app/models/{$userClass}.php";
+            require_once "../app/models-old/{$userClass}.php";
             
             $user = new $userClass($this->db);
             

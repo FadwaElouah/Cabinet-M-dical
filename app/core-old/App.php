@@ -9,12 +9,12 @@ class App
     {
         $url = $this->parseUrl();
 
-        if (file_exists('../app/controllers/' . ucfirst($url[0]) . 'Controller.php')) {
+        if (file_exists('../app/controllers-old/' . ucfirst($url[0]) . 'Controller.php')) {
             $this->controller = ucfirst($url[0]) . 'Controller';
             unset($url[0]);
         }
 
-        require_once '../app/controllers/' . $this->controller . '.php';
+        require_once '../app/controllers-old/' . $this->controller . '.php';
         $this->controller = new $this->controller;
 
         if (isset($url[1])) {

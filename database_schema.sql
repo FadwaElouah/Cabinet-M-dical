@@ -35,7 +35,7 @@ CREATE TABLE rendez_vous (
     medecin_id INTEGER NOT NULL,
     date_heure TIMESTAMP NOT NULL,
     motif TEXT NOT NULL,
-    statut VARCHAR(20) NOT NULL DEFAULT 'Planifié',
+    statut VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,

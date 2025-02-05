@@ -10,7 +10,7 @@ class Controller
 
     protected function model($model)
     {
-        require_once '../app/models/' . $model . '.php';
+        require_once '../app/models-old/' . $model . '.php';
         return new $model($this->db);
     }
 
