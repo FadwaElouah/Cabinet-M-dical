@@ -51,3 +51,15 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+-- =======
+
+-- Index pour améliorer les performances des requêtes
+CREATE INDEX idx_patients_nom_prenom ON patients(nom, prenom);
+CREATE INDEX idx_medecins_nom_prenom ON medecins(nom, prenom);
+CREATE INDEX idx_rendez_vous_date_heure ON rendez_vous(date_heure);
+CREATE INDEX idx_rendez_vous_patient_id ON rendez_vous(patient_id);
+CREATE INDEX idx_rendez_vous_medecin_id ON rendez_vous(medecin_id);
+
+
