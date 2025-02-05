@@ -71,3 +71,27 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+
+
+-- Triggers pour mettre à jour automatiquement 'updated_at'
+CREATE TRIGGER update_patients_modtime
+    BEFORE UPDATE ON patients
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_column();
+
+CREATE TRIGGER update_medecins_modtime
+    BEFORE UPDATE ON medecins
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_column();
+
+CREATE TRIGGER update_rendez_vous_modtime
+    BEFORE UPDATE ON rendez_vous
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_column();
+
+CREATE TRIGGER update_users_modtime
+    BEFORE UPDATE ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_column();
+
+
