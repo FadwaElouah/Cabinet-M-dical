@@ -62,4 +62,12 @@ CREATE INDEX idx_rendez_vous_date_heure ON rendez_vous(date_heure);
 CREATE INDEX idx_rendez_vous_patient_id ON rendez_vous(patient_id);
 CREATE INDEX idx_rendez_vous_medecin_id ON rendez_vous(medecin_id);
 
+-- Fonction pour mettre à jour le timestamp 'updated_at'
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
 
