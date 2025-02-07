@@ -8,9 +8,9 @@ class AuthController extends BaseController
 {
     private $authService;
 
-    public function __construct(AuthService $authService)
+    public function __construct()
     {
-        $this->authService = $authService;
+        $this->authService = new AuthService();
     }
 
     public function login()

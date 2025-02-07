@@ -28,7 +28,7 @@
         <div>
             <label for="date_heure">Date et heure :</label>
             <input type="datetime-local" name="date_heure" id="date_heure" required>
-        </div>
+        </div> 
         <div>
             <label for="motif">Motif :</label>
             <textarea name="motif" id="motif" required></textarea>

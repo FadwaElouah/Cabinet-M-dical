@@ -4,29 +4,27 @@ CREATE DATABASE cabinet_medical;
 -- Connexion à la base de données
 \c cabinet_medical
 
+
+CREATE TYPE user_role AS ENUM ('Patient', 'Medecin');
+CREATE TYPE user_status AS ENUM ('Actif', 'Suspendu');
+CREATE TYPE rdv_status AS ENUM ('Accepté', 'Refusé');
+
+
 -- Table des patients
-CREATE TABLE patients (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100) NOT NULL,
     date_naissance DATE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     telephone VARCHAR(20) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status user_status default 'Actif',
+    role user_role NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table des médecins
-CREATE TABLE medecins (
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    specialite VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    telephone VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 -- Table des rendez-vous
 CREATE TABLE rendez_vous (
@@ -34,64 +32,14 @@ CREATE TABLE rendez_vous (
     patient_id INTEGER NOT NULL,
     medecin_id INTEGER NOT NULL,
     date_heure TIMESTAMP NOT NULL,
-    motif TEXT NOT NULL,
-    statut VARCHAR(20) NOT NULL,
+    status rdv_status default 'Accepté', 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
-    FOREIGN KEY (medecin_id) REFERENCES medecins(id) ON DELETE CASCADE
-);
-
--- Table des utilisateurs
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (medecin_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
--- =======
 
--- Index pour améliorer les performances des requêtes
-CREATE INDEX idx_patients_nom_prenom ON patients(nom, prenom);
-CREATE INDEX idx_medecins_nom_prenom ON medecins(nom, prenom);
-CREATE INDEX idx_rendez_vous_date_heure ON rendez_vous(date_heure);
-CREATE INDEX idx_rendez_vous_patient_id ON rendez_vous(patient_id);
-CREATE INDEX idx_rendez_vous_medecin_id ON rendez_vous(medecin_id);
-
--- Fonction pour mettre à jour le timestamp 'updated_at'
-CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = now();
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-
-
--- Triggers pour mettre à jour automatiquement 'updated_at'
-CREATE TRIGGER update_patients_modtime
-    BEFORE UPDATE ON patients
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_column();
-
-CREATE TRIGGER update_medecins_modtime
-    BEFORE UPDATE ON medecins
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_column();
-
-CREATE TRIGGER update_rendez_vous_modtime
-    BEFORE UPDATE ON rendez_vous
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_column();
-
-CREATE TRIGGER update_users_modtime
-    BEFORE UPDATE ON users
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_column();
 
 

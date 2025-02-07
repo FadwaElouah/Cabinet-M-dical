@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Core\Database;
-use App; // Assuming App class exists and provides getDatabase() method
+use App\Core\App; // Assuming App class exists and provides getDatabase() method
 
 class Patient
 {
@@ -42,7 +42,7 @@ class Patient
     public static function getAll(): array
     {
         $db = App::getInstance()->getDatabase();
-        $stmt = $db->query("SELECT * FROM patients");
+        $stmt = $db->query("SELECT * FROM users WHERE role = 'Patient'");
         return $stmt->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
 
